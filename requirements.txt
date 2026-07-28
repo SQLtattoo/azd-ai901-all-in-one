@@ -6,7 +6,7 @@
 python-dotenv~=1.0
 
 # Auth
-azure-identity~=1.17
+azure-identity~=1.25
 
 # Foundry / model access (2.x exposes an OpenAI-compatible client via get_openai_client)
 azure-ai-projects~=2.4
