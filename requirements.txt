@@ -3,7 +3,7 @@
 # inside the current major version, so a new major can't silently break a class.
 # Pins are known-good as of mid-2026; Foundry SDKs move fast — bump if needed.
 
-python-dotenv~=1.0
+python-dotenv~=1.2
 
 # Auth
 azure-identity~=1.25
