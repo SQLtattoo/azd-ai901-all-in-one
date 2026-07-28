@@ -13,7 +13,7 @@ azure-ai-projects~=2.4
 openai~=2.49
 
 # Speech (Demo 4)
-azure-cognitiveservices-speech~=1.38
+azure-cognitiveservices-speech~=1.51
 
 # Content Understanding (Demo 6) is called over REST
 requests~=2.31
