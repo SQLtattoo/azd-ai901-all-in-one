@@ -1,0 +1,24 @@
+# azd configuration for the AI-901 demos.
+# Infrastructure-only: `azd up` provisions the Foundry account, project,
+# model deployments, and RBAC, then writes the app .env via a postprovision hook.
+name: ai901-demos
+metadata:
+  template: ai901-demos@0.1
+
+infra:
+  provider: bicep
+  path: infra
+  module: main
+
+hooks:
+  postprovision:
+    windows:
+      shell: pwsh
+      run: ./scripts/write-dotenv.ps1
+      interactive: false
+      continueOnError: false
+    posix:
+      shell: sh
+      run: ./scripts/write-dotenv.sh
+      interactive: false
+      continueOnError: false

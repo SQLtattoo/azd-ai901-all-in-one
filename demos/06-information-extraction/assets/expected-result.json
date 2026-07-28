@@ -1,0 +1,16 @@
+{
+  "_note": "Illustrative expected output for assets/sample-invoice.pdf. Field names and structure vary by analyzer version; use this only as an offline fallback to narrate Demo 6.",
+  "vendor": "Contoso Ltd.",
+  "vendor_address": "123 Cloud Way, Redmond, WA 98052",
+  "invoice_number": "INV-2026-0742",
+  "invoice_date": "2026-07-15",
+  "bill_to": "Northwind Traders",
+  "line_items": [
+    { "description": "Azure AI Foundry setup", "quantity": 1, "unit_price": 1200.00, "amount": 1200.00 },
+    { "description": "Content Understanding pack", "quantity": 3, "unit_price": 150.00, "amount": 450.00 },
+    { "description": "Speech add-on", "quantity": 2, "unit_price": 100.00, "amount": 200.00 }
+  ],
+  "subtotal": 1850.00,
+  "tax": 185.00,
+  "total": 2035.00
+}

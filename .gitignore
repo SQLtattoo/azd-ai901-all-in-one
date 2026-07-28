@@ -1,0 +1,30 @@
+# Secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+.azure/
+*.pem
+*.pfx
+*.key
+*.crt
+*.cer
+
+# Instructor-only notes — kept local, not published
+docs/
+
+# Compiled ARM output from Bicep (build artifact; drifts from the .bicep source)
+infra/*.json
+!infra/main.parameters.json
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Demo output artifacts
+demos/**/output/
+*.wav
+!demos/**/assets/*.wav
+ppts/

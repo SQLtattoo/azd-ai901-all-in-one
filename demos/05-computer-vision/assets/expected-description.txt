@@ -1,0 +1,8 @@
+A simple computer-generated graphic on a plain white background containing three
+basic shapes:
+ - a red square on the left,
+ - a blue circle in the center,
+ - a green triangle on the right.
+
+There is no text in the image. This is the expected description the multimodal
+model should return for assets/sample.png (wording will vary run to run).
