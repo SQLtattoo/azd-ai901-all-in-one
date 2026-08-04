@@ -10,16 +10,16 @@ azure-identity~=1.25
 
 # Foundry / model access (2.x exposes an OpenAI-compatible client via get_openai_client)
 azure-ai-projects~=2.4
-openai~=2.49
+openai~=2.52
 
 # Speech (Demo 4)
 azure-cognitiveservices-speech~=1.51
 
 # Content Understanding (Demo 6) is called over REST
-requests~=2.31
+requests~=2.34
 
 # Azure AI Language — Demo 3 Part C (PII detection & redaction)
-azure-ai-textanalytics~=5.3
+azure-ai-textanalytics~=5.4
 
 # OPTIONAL — Module 4 Part C (Voice Live, preview). Not installed by default.
 # Uncomment (or `pip install "azure-ai-voicelive[aiohttp]" pyaudio`) to run voice_live_chat.py.
