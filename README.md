@@ -8,6 +8,13 @@ The exam is reorganized around **Microsoft Foundry** and is far more hands-on th
 > 1. **Identify AI concepts and capabilities** (40–45%) — concepts
 > 2. **Implement AI solutions by using Microsoft Foundry** (55–60%) — hands-on
 
+## Study companion
+
+Use the [AI-901 learner cheatsheet](CHEATSHEET.md) for concise workload distinctions,
+Responsible AI principles, Foundry concepts, capability-selection guidance, and a quick
+self-test. Exam objectives and product terminology can change, so always verify the latest
+requirements in the [official AI-901 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-901).
+
 ---
 
 ## Demo map — aligned to the 6 course modules
