@@ -28,3 +28,5 @@ demos/**/output/
 *.wav
 !demos/**/assets/*.wav
 ppts/
+
+.copilot-azure/
