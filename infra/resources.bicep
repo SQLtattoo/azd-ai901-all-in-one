@@ -120,9 +120,10 @@ resource realtimeDeployment 'Microsoft.CognitiveServices/accounts/deployments@20
 
 // Keyless RBAC for the signed-in user. Covers OpenAI models, Speech,
 // Content Understanding, and Foundry agents.
+var cognitiveServicesUserRoleId = 'a97b65f3-24c7-4388-baec-2e87135dc908'
 var roleDefinitionIds = [
   '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd' // Cognitive Services OpenAI User
-  'a97b65f3-24c7-4388-baec-2e87135dc908' // Cognitive Services User
+  cognitiveServicesUserRoleId // Cognitive Services User
   '64702f94-c441-49e6-a78b-ef80e0188fee' // Azure AI Developer
   '53ca6127-db72-4b80-b1b0-d745d6d5456d' // Azure AI User
 ]
@@ -139,7 +140,19 @@ resource roleAssignments 'Microsoft.Authorization/roleAssignments@2022-04-01' = 
   }
 ]
 
+// Portal agents use the project's identity for project-managed-identity tools.
+resource projectCognitiveServicesUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(aiServices.id, project.id, cognitiveServicesUserRoleId)
+  scope: aiServices
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', cognitiveServicesUserRoleId)
+    principalId: project.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
 output FOUNDRY_PROJECT_ENDPOINT string = 'https://${aiServicesName}.services.ai.azure.com/api/projects/${projectName}'
+output VOICE_LIVE_ENDPOINT string = 'https://${aiServicesName}.services.ai.azure.com/'
 output CONTENT_UNDERSTANDING_ENDPOINT string = 'https://${aiServicesName}.services.ai.azure.com/'
 // Azure AI Language APIs (e.g. PII detection) use the multi-service Cognitive
 // Services endpoint on the same account.

@@ -4,6 +4,7 @@
 !.env.example
 !.env.sample
 .azure/
+.copilot-azure/
 *.pem
 *.pfx
 *.key
@@ -19,6 +20,7 @@ infra/*.json
 
 # Python
 .venv/
+.venv-*/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
@@ -28,5 +30,3 @@ demos/**/output/
 *.wav
 !demos/**/assets/*.wav
 ppts/
-
-.copilot-azure/

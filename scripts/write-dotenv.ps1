@@ -24,7 +24,7 @@ $lines = @(
     '# OPTIONAL Module 4 demos (Parts B & C). VOICE_LIVE_MODEL is provisioned;'
     '# SPEECH_MCP_URL is a preview Foundry Tools endpoint you set manually.'
     "VOICE_LIVE_MODEL=$env:VOICE_LIVE_MODEL"
-    'VOICE_LIVE_ENDPOINT='
+    "VOICE_LIVE_ENDPOINT=$env:VOICE_LIVE_ENDPOINT"
     'SPEECH_MCP_URL='
 )
 

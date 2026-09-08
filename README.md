@@ -128,12 +128,47 @@ separate from vision *input* and unaffected by the chat model choice.
 
 ## Setup (Python)
 
+Python virtual environments are bound to the interpreter that created them; do not install
+packages into one environment with a different Python version. Python 3.12 is recommended
+because it runs every demo, including the optional Voice Live demo:
+
+> **Why two virtual environments?** The Voice Live demo depends on PyAudio and other native
+> Windows wheels that currently work reliably with Python 3.12, while the standard demos can
+> also run on Python 3.14. Keeping `.venv` (3.12) and `.venv-314` (3.14) separate prevents
+> version-specific native wheels such as `pydantic-core` from being mixed, which can cause
+> `ModuleNotFoundError` at import time. Most users only need `.venv`; `.venv-314` is optional
+> for testing the standard demos on Python 3.14.
+
 ```powershell
 # From the repo root
-python -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
+python -m pip install "azure-ai-voicelive[aiohttp]" pyaudio
 ```
+
+You can also keep a separate Python 3.14 environment for the standard, non-Voice demos:
+
+```powershell
+py -3.14 -m venv .venv-314
+.\.venv-314\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
+Switch environments by deactivating the current one and activating the other:
+
+```powershell
+deactivate
+.\.venv\Scripts\Activate.ps1       # Python 3.12: all demos, including Voice Live
+
+deactivate
+.\.venv-314\Scripts\Activate.ps1   # Python 3.14: standard demos only
+
+python --version                    # confirm which environment is active
+```
+
+Always use `python -m pip` after activation so packages and native wheels are installed for
+that environment's interpreter. Both environment directories are excluded by `.gitignore`.
 
 If you did **not** use `azd`, create `.env` manually:
 

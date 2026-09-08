@@ -16,7 +16,6 @@ Run:
     # speak; press Ctrl+C to stop.
 """
 import asyncio
-import base64
 import os
 import signal
 import sys
@@ -26,7 +25,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 PROJECT_ENDPOINT = os.getenv("FOUNDRY_PROJECT_ENDPOINT")
-VOICE_LIVE_ENDPOINT = os.getenv("VOICE_LIVE_ENDPOINT") or PROJECT_ENDPOINT
+VOICE_LIVE_ENDPOINT = os.getenv("VOICE_LIVE_ENDPOINT") or (
+    PROJECT_ENDPOINT.split("/api/projects/", 1)[0] if PROJECT_ENDPOINT else None
+)
 VOICE_LIVE_MODEL = os.getenv("VOICE_LIVE_MODEL", "gpt-realtime")
 VOICE_NAME = os.getenv("VOICE_LIVE_VOICE", "en-US-AvaMultilingualNeural")
 
@@ -72,7 +73,7 @@ async def run():
             output_audio_format=OutputAudioFormat.PCM16,
             turn_detection=ServerVad(threshold=0.5, prefix_padding_ms=300, silence_duration_ms=500),
             input_audio_echo_cancellation=AudioEchoCancellation(),
-            input_audio_noise_reduction=AudioNoiseReduction(),
+            input_audio_noise_reduction=AudioNoiseReduction(type="azure_deep_noise_suppression"),
         )
         await connection.session.update(session=session)
 
@@ -85,8 +86,7 @@ async def run():
         async for event in connection:
             etype = event.type
             if etype == "response.audio.delta":
-                # delta is base64-encoded PCM16 audio.
-                player.play(base64.b64decode(event.delta))
+                player.play(event.delta)
             elif etype == "input_audio_buffer.speech_started":
                 player.stop()  # barge-in: user started talking, cut playback
             elif etype == "response.audio_transcript.done":

@@ -70,6 +70,7 @@ module resources 'resources.bicep' = {
 
 // These outputs are surfaced by azd as environment variables to the postprovision hook.
 output FOUNDRY_PROJECT_ENDPOINT string = resources.outputs.FOUNDRY_PROJECT_ENDPOINT
+output VOICE_LIVE_ENDPOINT string = resources.outputs.VOICE_LIVE_ENDPOINT
 output CONTENT_UNDERSTANDING_ENDPOINT string = resources.outputs.CONTENT_UNDERSTANDING_ENDPOINT
 output LANGUAGE_ENDPOINT string = resources.outputs.LANGUAGE_ENDPOINT
 output SPEECH_RESOURCE_ID string = resources.outputs.SPEECH_RESOURCE_ID

@@ -9,10 +9,15 @@ Requires the preview packages (not in requirements.txt by default):
 """
 import asyncio
 import base64
+import os
+import threading
+from array import array
 
 SAMPLE_RATE = 24000  # Voice Live uses 24 kHz PCM16 mono
 CHANNELS = 1
 CHUNK = 1024
+NOISE_GATE_THRESHOLD = int(os.getenv("VOICE_LIVE_NOISE_GATE_THRESHOLD", "500"))
+NOISE_GATE_RELEASE_CHUNKS = 3
 
 
 class AudioPlayer:
@@ -22,20 +27,46 @@ class AudioPlayer:
         import pyaudio
 
         self._pa = pyaudio.PyAudio()
+        self._buffer = bytearray()
+        self._buffer_lock = threading.Lock()
+        self._noise_gate_release = 0
+        self._pa_continue = pyaudio.paContinue
         self._stream = self._pa.open(
             format=pyaudio.paInt16,
             channels=CHANNELS,
             rate=SAMPLE_RATE,
             output=True,
+            frames_per_buffer=CHUNK,
+            stream_callback=self._on_audio_requested,
         )
 
     def play(self, pcm16_bytes: bytes) -> None:
-        self._stream.write(pcm16_bytes)
+        with self._buffer_lock:
+            self._buffer.extend(pcm16_bytes)
+
+    def _on_audio_requested(self, _input_data, frame_count, _time_info, _status_flags):
+        byte_count = frame_count * CHANNELS * 2
+        with self._buffer_lock:
+            audio = bytes(self._buffer[:byte_count])
+            del self._buffer[:byte_count]
+        audio = audio.ljust(byte_count, b"\x00")
+
+        samples = array("h", audio)
+        peak = max((abs(sample) for sample in samples), default=0)
+        if peak >= NOISE_GATE_THRESHOLD:
+            self._noise_gate_release = NOISE_GATE_RELEASE_CHUNKS
+        elif self._noise_gate_release:
+            self._noise_gate_release -= 1
+        else:
+            audio = b"\x00" * byte_count
+
+        return audio, self._pa_continue
 
     def stop(self) -> None:
         # Drop any buffered audio so the user can interrupt the model.
-        self._stream.stop_stream()
-        self._stream.start_stream()
+        with self._buffer_lock:
+            self._buffer.clear()
+        self._noise_gate_release = 0
 
     def close(self) -> None:
         self._stream.stop_stream()
